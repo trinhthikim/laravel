@@ -97,6 +97,8 @@ class ProductController extends Controller
     {
 
         if($request->file()) {
+            $image_path = public_path().'/'.$product->image;
+            unlink($image_path);
             $fileName = time().'_'.$request->file('image')->getClientOriginalName();
             $filePath = $request->file('image')->storeAs('uploads', $fileName, 'public');
 
@@ -122,8 +124,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        $image_path = public_path().'/'.$product->image;
+        unlink($image_path);
         $product->delete();
-    
+        
         return redirect()->route('product.index')
                         ->with('success','Product deleted successfully');
     }
